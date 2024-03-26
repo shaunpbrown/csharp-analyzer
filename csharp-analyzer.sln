@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34622.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "csharp-analyzer", "csharp-analyzer\csharp-analyzer.csproj", "{D985E223-B0C2-4E48-85DB-E83CD7A1DFF2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "console_call_csharp_from_js", "console_call_csharp_from_js\console_call_csharp_from_js.csproj", "{6DA25775-4DD9-4159-8E64-BE54DF737274}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "WebUI4CSharp", "WebUI4CSharp\WebUI4CSharp.shproj", "{6F35FD1F-6A07-4BB7-AB29-86BF280B75B7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D985E223-B0C2-4E48-85DB-E83CD7A1DFF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D985E223-B0C2-4E48-85DB-E83CD7A1DFF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D985E223-B0C2-4E48-85DB-E83CD7A1DFF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D985E223-B0C2-4E48-85DB-E83CD7A1DFF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DA25775-4DD9-4159-8E64-BE54DF737274}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DA25775-4DD9-4159-8E64-BE54DF737274}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DA25775-4DD9-4159-8E64-BE54DF737274}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DA25775-4DD9-4159-8E64-BE54DF737274}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A6778FB4-BAF3-42ED-ACED-D6EA01D018ED}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		WebUI4CSharp\WebUI4CSharp.projitems*{6da25775-4dd9-4159-8e64-be54df737274}*SharedItemsImports = 5
+		WebUI4CSharp\WebUI4CSharp.projitems*{6f35fd1f-6a07-4bb7-ab29-86bf280b75b7}*SharedItemsImports = 13
+		WebUI4CSharp\WebUI4CSharp.projitems*{d985e223-b0c2-4e48-85db-e83cd7a1dff2}*SharedItemsImports = 5
+	EndGlobalSection
+EndGlobal
