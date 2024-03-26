@@ -1,7 +1,6 @@
 import { select, tree, hierarchy, linkHorizontal, zoom } from 'https://cdn.jsdelivr.net/npm/d3@7/+esm';
 
 const createGraph = (data) => {
-    debugger;
     document.getElementById('graph')?.remove();
     document.body.insertAdjacentHTML('beforeend', '<svg id="graph"></svg>');
     const svg = select('svg');

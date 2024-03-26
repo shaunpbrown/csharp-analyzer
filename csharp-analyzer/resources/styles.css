@@ -21,13 +21,6 @@ text {
         1px 1px 3px #fff;
     pointer-events: none;
     font-family: "Teko", sans-serif;
-    max-width: 500px;
-    max-height: 300px;
-    overflow: hidden;
-    background-color: #257ed1;
-    font-size: 14px;
-    white-space: pre-wrap;
-    word-wrap: break-word;
 }
 
 button {
