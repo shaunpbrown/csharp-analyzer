@@ -1,0 +1,44 @@
+body {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+path {
+    fill: none;
+    stroke: #257ed1;
+}
+
+text {
+    text-shadow:
+        -1px -1px 3px #fff,
+        -1px 1px 3px #fff,
+        1px -1px 3px #fff,
+        1px 1px 3px #fff;
+    pointer-events: none;
+    font-family: "Teko", sans-serif;
+    max-width: 500px;
+    max-height: 300px;
+    overflow: hidden;
+    background-color: #257ed1;
+    font-size: 14px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: #257ed1;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}

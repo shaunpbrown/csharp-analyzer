@@ -12,6 +12,12 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.9.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="resources\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>$(DefineConstants);WEBUIDEMO</DefineConstants>
   </PropertyGroup>
@@ -23,7 +29,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <DefineConstants>$(DefineConstants);WEBUIDEMO</DefineConstants>
   </PropertyGroup>
-
 
   <Import Project="..\WebUI4CSharp\WebUI4CSharp.projitems" Label="Shared" />
 
