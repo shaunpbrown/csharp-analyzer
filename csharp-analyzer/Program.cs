@@ -1,4 +1,8 @@
-﻿using WebUI4CSharp;
+﻿using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis;
+using WebUI4CSharp;
+using csharp_analyzer;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 string my_html =
         "<!DOCTYPE html>" +
@@ -72,5 +76,20 @@ window.Bind("MyID_Three", WebUI_Events.my_function_boolean);
 window.Bind("MyID_Four", WebUI_Events.my_function_with_response);
 window.Bind("MyID_RawBinary", WebUI_Events.my_function_raw_binary);
 window.Show(my_html);
+
+var fileString = File.ReadAllText("C:\\csharp-analyzer\\csharp-analyzer\\TestFiles\\Bird.cs");
+SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(fileString);
+var root = syntaxTree.GetRoot();
+var methods = root.DescendantNodes().OfType<MethodDeclarationSyntax>();
+var method = methods.First();
+foreach(var node in method.DescendantNodes())
+{
+    Console.WriteLine($"{node.GetType()}----------");
+    Console.WriteLine(node);
+    Console.WriteLine("----------");
+}
+Console.WriteLine(method);
+
+
 WebUI.Wait();
 WebUI.Clean();
