@@ -1,4 +1,4 @@
-﻿namespace csharp_analyzer.FileProcessing
+﻿namespace csharp_analyzer.Temp
 {
     public class FileData
     {

@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using csharp_analyzer.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -31,6 +32,15 @@ namespace csharp_analyzer
             sb.Append("]");
             sb.Append("}");
             return sb.ToString();
+        }
+
+        public static void LogToConsole(this SyntaxTree syntaxTree)
+        {
+            Console.WriteLine();
+            Console.WriteLine($"Abstract Syntax Tree");
+            Console.WriteLine("-----------------------------------------");
+            CSharpAnalyzer.DisplayNodesAndTokensInConsole(syntaxTree.GetRoot());
+            Console.WriteLine();
         }
     }
 }

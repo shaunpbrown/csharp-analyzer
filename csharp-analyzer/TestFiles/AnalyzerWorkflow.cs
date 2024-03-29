@@ -1,9 +1,8 @@
 ﻿using csharp_analyzer.CodeAnalysis;
-using csharp_analyzer.FileProcessing;
 using Microsoft.CodeAnalysis;
 using System.Collections.Concurrent;
 
-namespace csharp_analyzer
+namespace csharp_analyzer.Temp
 {
     public class AnalyzerWorkflow
     {

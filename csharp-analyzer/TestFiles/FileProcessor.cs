@@ -1,10 +1,10 @@
-﻿namespace csharp_analyzer.FileProcessing
+﻿namespace csharp_analyzer.Temp
 {
     public class FileProcessor
     {
         public static FileData GetSingleTestFile()
         {
-            var filePath = AnalyzerConfig.FilePath;
+            var filePath = "C:\\Users\\nbuli\\source\\repos\\csharp-analyzer\\csharp-analyzer\\TestFiles\\Bird.cs";
 
             if (!File.Exists(filePath))
             {
@@ -21,7 +21,7 @@
 
         public static IEnumerable<string> GetCSharpFileNames()
         {
-            var directoryPath = AnalyzerConfig.DirectoryPath;
+            var directoryPath = "C:\\Users\\nbuli\\source\\repos\\csharp-analyzer\\csharp-analyzer\\TestFiles";
 
             if (!Directory.Exists(directoryPath))
             {

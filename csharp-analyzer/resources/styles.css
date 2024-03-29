@@ -8,6 +8,13 @@ body {
     overflow: hidden;
 }
 
+svg {
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    background-color: #ffffff;
+}
+
 path {
     fill: none;
     stroke: #257ed1;
@@ -24,9 +31,7 @@ text {
 }
 
 button {
-    position: absolute;
-    top: 20px;
-    left: 20px;
+    display: block;
     background-color: #257ed1;
     color: white;
     border: none;
@@ -34,4 +39,12 @@ button {
     font-size: 16px;
     cursor: pointer;
     border-radius: 5px;
+    margin: 10px;
+}
+
+#buttons {
+    z-index: 1000;
+    position: fixed;
+    top: 20px;
+    left: 20px;
 }
