@@ -1,12 +1,13 @@
 ﻿using csharp_analyzer.CodeAnalysis;
 using csharp_analyzer.FileProcessing;
 using Microsoft.CodeAnalysis;
+using System.Collections.Concurrent;
 
 namespace csharp_analyzer
 {
     public class AnalyzerWorkflow
     {
-        public static SyntaxTree AnalyzeTestFileAsync()
+        public static SyntaxTree AnalyzeTestFile()
         {
             var fileData = FileProcessor.GetSingleTestFile();
 
@@ -20,25 +21,27 @@ namespace csharp_analyzer
             return syntaxTree;
         }
 
-        public static async Task<IEnumerable<SyntaxTree>> AnalyzeCodeBaseAsync()
+        public static IEnumerable<SyntaxTree> AnalyzeCodeBase()
         {
-            var fileNames = await FileProcessor.GetCSharpFileNamesAsync();
+            var fileNames = FileProcessor.GetCSharpFileNames();
 
-            var syntaxTrees = new List<SyntaxTree>();
+            var syntaxTrees = new ConcurrentBag<SyntaxTree>();
 
-            foreach (var fileName in fileNames)
+            Parallel.ForEach(fileNames, fileName =>
             {
-                var fileData = await FileProcessor.ExtractFileData(fileName);
-
+                var fileData = FileProcessor.ExtractFileData(fileName);
                 var syntaxTree = CSharpAnalyzer.GenerateSyntaxTree(fileData.Content);
 
                 syntaxTrees.Add(syntaxTree);
 
                 if (AnalyzerConfig.ConsoleLogTrees)
                 {
-                    DisplayInConsole(syntaxTree, fileData.Name);
+                    lock (Console.Out)
+                    {
+                        DisplayInConsole(syntaxTree, fileData.Name);
+                    }
                 }
-            }
+            });
 
             return syntaxTrees;
         }

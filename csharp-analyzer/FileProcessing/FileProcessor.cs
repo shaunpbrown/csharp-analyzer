@@ -19,7 +19,7 @@
             };
         }
 
-        public static async Task<IEnumerable<string>> GetCSharpFileNamesAsync()
+        public static IEnumerable<string> GetCSharpFileNames()
         {
             var directoryPath = AnalyzerConfig.DirectoryPath;
 
@@ -29,10 +29,10 @@
                 return Array.Empty<string>();
             }
 
-            return await Task.Run(() => Directory.GetFiles(directoryPath, "*.cs", SearchOption.AllDirectories));
+            return Directory.GetFiles(directoryPath, "*.cs", SearchOption.AllDirectories);
         }
 
-        public static async Task<FileData> ExtractFileData(string filePath)
+        public static FileData ExtractFileData(string filePath)
         {
             if (!File.Exists(filePath))
             {
@@ -44,7 +44,7 @@
             return new FileData
             {
                 Name = Path.GetFileName(filePath),
-                Content = await reader.ReadToEndAsync()
+                Content = reader.ReadToEnd()
             };
         }
     }

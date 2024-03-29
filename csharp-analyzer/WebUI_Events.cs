@@ -20,8 +20,17 @@ namespace csharp_analyzer
         public static void GetTestFileSyntaxTree(ref webui_event_t e)
         {
             WebUIEvent lEvent = new(e);
-            SyntaxTree syntaxTree = AnalyzerWorkflow.AnalyzeTestFileAsync();
+            SyntaxTree syntaxTree = AnalyzerWorkflow.AnalyzeTestFile();
             var root = syntaxTree.GetRoot();
+            var json = root.ToJson();
+            lEvent.ReturnString(json);
+        }
+
+        public static void GetCodeBaseSyntaxTree(ref webui_event_t e)
+        {
+            WebUIEvent lEvent = new(e);
+            var treeList = AnalyzerWorkflow.AnalyzeCodeBase();
+            var root = treeList.First().GetRoot();
             var json = root.ToJson();
             lEvent.ReturnString(json);
         }

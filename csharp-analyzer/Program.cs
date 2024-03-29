@@ -11,7 +11,7 @@ WebUI.Clean();
 
 //var html = File.ReadAllText("resources\\index.html");
 //WebUIWindow window = new();
-//window.Bind("GetBirdSyntaxTree", WebUI_Events.GetTestFileSyntaxTree);
+//window.Bind("GetCodeBaseSyntaxTree", WebUI_Events.GetCodeBaseSyntaxTree);
 //window.Show(html);
 //Console.WriteLine("Application is running...");
 //WebUI.Wait();
