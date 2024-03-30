@@ -1,36 +1,28 @@
 import { select, tree, hierarchy, linkHorizontal, zoom, zoomIdentity } from 'https://cdn.jsdelivr.net/npm/d3@7/+esm';
 
+let graphOffset = 0;
+
 const clearGraph = () => {
     // Select the SVG container and clear any existing content
     const svg = select('svg');
     svg.selectAll('*').remove();
+
+    // Define the zoom behavior and apply it to the SVG
+    const zoomGroup = svg.append('g').attr('id', 'zoom-group');
+    const zoomBehavior = zoom().on('zoom', (event) => {
+        zoomGroup.attr('transform', event.transform);
+    });
+    svg.call(zoomBehavior);
+    svg.call(zoomBehavior.transform, zoomIdentity);
+
+    // Reset graph offset
+    graphOffset = 0;
 };
 
 const createGraph = (data) => {
     // Select the SVG container 
-    const svg = select('svg');
-
-    // Set the dimensions of the graph
-    const width = document.body.clientWidth;
-    const height = document.body.clientHeight;
-
-    // Create a group element (`g`) that will contain the tree
-    // This group will also handle the zoom and pan features
-    const zoomG = svg.attr('width', width)
-        .attr('height', height)
-        .append('g');
-
-    // Create another group inside `zoomG` to apply the transformations
-    const contentGroup = zoomG.append('g');
-
-    // Define the zoom behavior and apply it to the SVG
-    const zoomBehavior = zoom().on('zoom', (event) => {
-        contentGroup.attr('transform', event.transform);
-    });
-    svg.call(zoomBehavior);
-
-    // Reset the zoom and pan to the initial state
-    svg.call(zoomBehavior.transform, zoomIdentity);
+    const zoomGroup = select('#zoom-group');
+    const contentGroup = zoomGroup.append('g');
 
     // Parse the data to create a hierarchy and then compute the layout
     const root = hierarchy(JSON.parse(data));
@@ -62,14 +54,15 @@ const createGraph = (data) => {
         return maxBreadth;
     };
 
-    const treeLayout = tree().size([maxBreadth(root) * 50, maxDepth * 150]);
+    const graphHeightSize = maxBreadth(root) * 50;
+
+    const treeLayout = tree().size([graphHeightSize, maxDepth * 150]);
     treeLayout(root);
-    debugger;
 
     // Define a generator for the links (lines between nodes)
     const linkPathGenerator = linkHorizontal()
         .x(node => node.y)
-        .y(node => node.x);
+        .y(node => node.x + graphOffset);
 
     // Draw the links (paths) between nodes
     contentGroup.selectAll('path')
@@ -82,10 +75,13 @@ const createGraph = (data) => {
         .data(root.descendants())
         .enter().append('text')
         .attr('x', node => node.y)
-        .attr('y', node => node.x)
+        .attr('y', node => node.x + graphOffset)
         .attr('dy', '0.32em')
         .attr('text-anchor', 'middle')
         .text(node => node.data.syntaxData.displayName);
+
+    // Update graph offset
+    graphOffset += graphHeightSize + 50;
 };
 
 const handleTestButtonClicked = () => {
