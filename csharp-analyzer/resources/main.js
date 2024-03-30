@@ -138,6 +138,7 @@ const handleFileSelectClicked = () => {
         .then(res => {
             console.log('LoadSyntaxTreeFromFile');
             console.log(res);
+            if (res === '') return;
             clearGraph();
             createGraph(res);
         });
@@ -148,6 +149,7 @@ const handleDirectorySelectClicked = () => {
         .then(fileNameJson => {
             console.log('LoadSyntaxTreeFromDirectory');
             console.log(fileNameJson);
+            if (fileNameJson === '') return;
             clearGraph();
             let fileNames = JSON.parse(fileNameJson);
             fileNames.forEach(fileName => {
