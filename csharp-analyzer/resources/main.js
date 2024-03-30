@@ -1,9 +1,14 @@
 import { select, tree, hierarchy, linkHorizontal, zoom, zoomIdentity } from 'https://cdn.jsdelivr.net/npm/d3@7/+esm';
 
-const createGraph = (data) => {
+const clearGraph = () => {
     // Select the SVG container and clear any existing content
     const svg = select('svg');
     svg.selectAll('*').remove();
+};
+
+const createGraph = (data) => {
+    // Select the SVG container 
+    const svg = select('svg');
 
     // Set the dimensions of the graph
     const width = document.body.clientWidth;
@@ -29,13 +34,7 @@ const createGraph = (data) => {
 
     // Parse the data to create a hierarchy and then compute the layout
     const root = hierarchy(JSON.parse(data));
-
-    const maxDepth = (node) => {
-        if (!node.children || node.children.length === 0) {
-            return 0;
-        }
-        return 1 + Math.max(...node.children.map(maxDepth));
-    };
+    const maxDepth = root.height;
 
     const maxBreadth = (root) => {
         let maxBreadth = 0;
@@ -62,7 +61,8 @@ const createGraph = (data) => {
 
         return maxBreadth;
     };
-    const treeLayout = tree().size([maxBreadth(root) * 50, maxDepth(root) * 150]);
+
+    const treeLayout = tree().size([maxBreadth(root) * 50, maxDepth * 150]);
     treeLayout(root);
     debugger;
 
@@ -91,7 +91,9 @@ const createGraph = (data) => {
 const handleTestButtonClicked = () => {
     webui.call('GetBirdSyntaxTree')
         .then(res => {
+            console.log('GetBirdSyntaxTree');
             console.log(res);
+            clearGraph();
             createGraph(res);
         });
 }
@@ -99,6 +101,7 @@ const handleTestButtonClicked = () => {
 const handleFileSelectClicked = () => {
     webui.call('LoadSyntaxTreeFromFile')
         .then(res => {
+            console.log('LoadSyntaxTreeFromFile');
             console.log(res);
             createGraph(res);
         });
@@ -106,9 +109,19 @@ const handleFileSelectClicked = () => {
 
 const handleDirectorySelectClicked = () => {
     webui.call('LoadSyntaxTreeFromDirectory')
-        .then(res => {
-            console.log(res);
-            createGraph(res);
+        .then(fileNameJson => {
+            console.log('LoadSyntaxTreeFromDirectory');
+            console.log(fileNameJson);
+            clearGraph();
+            let fileNames = JSON.parse(fileNameJson);
+            fileNames.forEach(fileName => {
+                webui.call('GetSyntaxTreeWithFileName', fileName)
+                    .then(syntaxTreeJson => {
+                        console.log('GetSyntaxTreeWithFileName');
+                        console.log(syntaxTreeJson);
+                        createGraph(syntaxTreeJson);
+                    });
+            });
         });
 }
 
@@ -122,3 +135,4 @@ document.getElementById('test').addEventListener('click', () => handleTestButton
 document.getElementById('select-file').addEventListener('click', (e) => handleFileSelectClicked());
 document.getElementById('select-directory').addEventListener('click', (e) => handleDirectorySelectClicked());
 window.addEventListener('resize', () => handleResizeEvent());
+window.addEventListener('keydown', function (event) { if (event.key === 'Escape') { window.close(); } });

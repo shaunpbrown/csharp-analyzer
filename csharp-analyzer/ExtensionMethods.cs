@@ -9,9 +9,9 @@ namespace csharp_analyzer
 {
     public static class ExtensionMethods
     {
-        public static string ToJson(this SyntaxNode node)
+        public static string ToJson(this SyntaxTree node)
         {
-            return JsonSerializer.Serialize(TreeSyntaxNode.From(node));
+            return JsonSerializer.Serialize(TreeSyntaxNode.From(node.GetRoot()));
         }
 
         [Obsolete("Use ToJson instead")]
@@ -30,7 +30,7 @@ namespace csharp_analyzer
             sb.Append("\"children\": [");
             foreach (var child in node.ChildNodes())
             {
-                sb.Append(child.ToJson());
+                sb.Append(child.ToJsonNoObject());
                 sb.Append(",");
             }
             if (node.ChildNodes().Any())
