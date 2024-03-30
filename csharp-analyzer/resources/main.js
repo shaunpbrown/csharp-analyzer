@@ -64,6 +64,7 @@ const createGraph = (data) => {
     };
     const treeLayout = tree().size([maxBreadth(root) * 50, maxDepth(root) * 150]);
     treeLayout(root);
+    debugger;
 
     // Define a generator for the links (lines between nodes)
     const linkPathGenerator = linkHorizontal()
@@ -84,7 +85,7 @@ const createGraph = (data) => {
         .attr('y', node => node.x)
         .attr('dy', '0.32em')
         .attr('text-anchor', 'middle')
-        .text(node => node.data.data.id);
+        .text(node => node.data.syntaxData.displayName);
 };
 
 const handleTestButtonClicked = () => {

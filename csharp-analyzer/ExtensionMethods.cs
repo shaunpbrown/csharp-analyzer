@@ -1,6 +1,8 @@
 ﻿using csharp_analyzer.CodeAnalysis;
+using csharp_analyzer.Modals;
 using Microsoft.CodeAnalysis;
 using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 
 namespace csharp_analyzer
@@ -9,6 +11,12 @@ namespace csharp_analyzer
     {
         public static string ToJson(this SyntaxNode node)
         {
+            return JsonSerializer.Serialize(TreeSyntaxNode.From(node));
+        }
+
+        [Obsolete("Use ToJson instead")]
+        public static string ToJsonNoObject(this SyntaxNode node)
+        {
             var nodeName = Regex.Replace(node.ToString(), "[\"\\\\\n\r\t ]", "");
             if (nodeName .Length > 20)
             {
@@ -16,8 +24,8 @@ namespace csharp_analyzer
             }
             var sb = new StringBuilder();
             sb.Append("{");
-            sb.Append("\"data\" : {");
-            sb.Append($"\"id\": \"{nodeName}\"");
+            sb.Append("\"syntaxNodeData\" : {");
+            sb.Append($"\"displayName\": \"{nodeName}\"");
             sb.Append("},");
             sb.Append("\"children\": [");
             foreach (var child in node.ChildNodes())
