@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
@@ -24,7 +25,8 @@ namespace csharp_analyzer.Modals
             {
                 SyntaxData = new Data
                 {
-                    DisplayName = displayName
+                    DisplayName = displayName,
+                    TokenKind = node.Kind().ToString(),
                 },
                 Children = node.ChildNodes().Select(node => TreeSyntaxNode.From(node))
             };
@@ -34,6 +36,9 @@ namespace csharp_analyzer.Modals
         {
             [JsonPropertyName("displayName")]
             public string DisplayName { get; set; } = string.Empty;
+
+            [JsonPropertyName("tokenKind")]
+            public string TokenKind { get; set; } = string.Empty;
         }
     }
 }

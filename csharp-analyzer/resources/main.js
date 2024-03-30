@@ -19,10 +19,11 @@ const clearGraph = () => {
     graphOffset = 0;
 };
 
-const createGraph = (data) => {
+const createGraph = (data, fileName = "") => {
     // Select the SVG container 
     const zoomGroup = select('#zoom-group');
-    const contentGroup = zoomGroup.append('g');
+    const contentGroup = zoomGroup.append('g')
+        .attr('transform', `translate(0, ${graphOffset})`);
 
     // Parse the data to create a hierarchy and then compute the layout
     const root = hierarchy(JSON.parse(data));
@@ -55,14 +56,15 @@ const createGraph = (data) => {
     };
 
     const graphHeightSize = maxBreadth(root) * 50;
+    const graphWidthSize = maxDepth * 150;
 
-    const treeLayout = tree().size([graphHeightSize, maxDepth * 150]);
+    const treeLayout = tree().size([graphHeightSize, graphWidthSize]);
     treeLayout(root);
 
     // Define a generator for the links (lines between nodes)
     const linkPathGenerator = linkHorizontal()
         .x(node => node.y)
-        .y(node => node.x + graphOffset);
+        .y(node => node.x);
 
     // Draw the links (paths) between nodes
     contentGroup.selectAll('path')
@@ -70,18 +72,55 @@ const createGraph = (data) => {
         .enter().append('path')
         .attr('d', linkPathGenerator);
 
-    // Draw the nodes as text elements
-    contentGroup.selectAll('text')
+    // Add text element for token kind
+    contentGroup.selectAll('text.tokenKind')
         .data(root.descendants())
         .enter().append('text')
+        .attr('class', 'tokenKind')
         .attr('x', node => node.y)
-        .attr('y', node => node.x + graphOffset)
+        .attr('y', node => node.x)
+        .attr('dy', '1.3em')
+        .attr('text-anchor', 'middle')
+        .attr('fill', 'rgba(0, 0, 0, 0.4)')
+        .style('font-size', '.7em')
+        .text(node => node.data.syntaxData.tokenKind);
+
+    // Draw the nodes display name as text elements
+    contentGroup.selectAll('text.displayName')
+        .data(root.descendants())
+        .enter().append('text')
+        .attr('class', 'displayName')
+        .attr('x', node => node.y)
+        .attr('y', node => node.x)
         .attr('dy', '0.32em')
         .attr('text-anchor', 'middle')
         .text(node => node.data.syntaxData.displayName);
 
+
+    // Draw the file box
+    if (fileName !== "") {
+        const widthPadding = 100;
+        const textLeftPadding = 30;
+
+        contentGroup.append('text')
+            .attr('x', -widthPadding + textLeftPadding)
+            .attr('y', graphHeightSize - 10)
+            .text(fileName)
+            .attr('font-size', '30px')
+            .attr('fill', 'rgba(255, 0, 0, 0.2)');
+
+        contentGroup.append('rect')
+            .attr('x', -widthPadding)
+            .attr('y', 0)
+            .attr('width', graphWidthSize + (widthPadding * 2))
+            .attr('height', graphHeightSize)
+            .attr('fill', 'none')
+            .attr('stroke', 'rgba(255, 0, 0, 0.2)')
+            .attr('stroke-width', 2);
+    }
+
     // Update graph offset
-    graphOffset += graphHeightSize + 50;
+    graphOffset += graphHeightSize + 10;
 };
 
 const handleTestButtonClicked = () => {
@@ -99,6 +138,7 @@ const handleFileSelectClicked = () => {
         .then(res => {
             console.log('LoadSyntaxTreeFromFile');
             console.log(res);
+            clearGraph();
             createGraph(res);
         });
 }
@@ -115,7 +155,7 @@ const handleDirectorySelectClicked = () => {
                     .then(syntaxTreeJson => {
                         console.log('GetSyntaxTreeWithFileName');
                         console.log(syntaxTreeJson);
-                        createGraph(syntaxTreeJson);
+                        createGraph(syntaxTreeJson, fileName);
                     });
             });
         });
