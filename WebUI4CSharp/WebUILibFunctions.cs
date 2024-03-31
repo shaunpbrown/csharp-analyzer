@@ -17,7 +17,7 @@ namespace WebUI4CSharp
                                                                                                     //private const string _LibName = "..\\..\\..\\..\\..\\..\\WebUI_binaries\\32bits\\webui-2.dll"; // x32 
                                                                                                     //private const string _LibName = "..\\..\\..\\..\\..\\..\\WebUI_binaries\\32bits\\webui-2_debug.dll"; // x32 (verbose logging)
 #else
-        private const string _LibName = "webui-2";    
+        private const string _LibName = "WebUI_binaries\\64bits\\webui-2.dll";    
 #endif
 
         /// <summary>
