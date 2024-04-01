@@ -6,7 +6,7 @@
         //public static string BirdTestPath { get; } = "C:\\Users\\nbuli\\source\\repos\\csharp-analyzer\\csharp-analyzer\\TestFiles\\Bird.cs";
 
 #if DEBUG
-        public static bool ConsoleLogTrees { get; } = true;
+        public static bool ConsoleLogTrees { get; } = false;
 #else
         public static bool ConsoleLogTrees { get; } = false;
 #endif

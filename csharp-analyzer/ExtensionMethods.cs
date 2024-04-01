@@ -11,7 +11,19 @@ namespace csharp_analyzer
     {
         public static string ToJson(this SyntaxTree node)
         {
-            return JsonSerializer.Serialize(TreeSyntaxNode.From(node.GetRoot()));
+            try{
+                return JsonSerializer.Serialize(TreeSyntaxNode.From(node.GetRoot()));
+            }
+            catch (Exception e)
+            {
+                return JsonSerializer.Serialize(new TreeSyntaxNode{
+                    SyntaxData = new TreeSyntaxNode.Data
+                    {
+                        DisplayName = "Error",
+                        TokenKind = e.Message,
+                    }
+                });
+            }
         }
 
         [Obsolete("Use ToJson instead")]
