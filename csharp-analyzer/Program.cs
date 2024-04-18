@@ -10,6 +10,8 @@ static extern bool AllocConsole();
 AllocConsole();
 #endif
 
+SemanticsCS.SemanticModel.Main();
+
 var html = File.ReadAllText("resources\\index.html");
 WebUIWindow window = new WebUIWindow();
 window.Bind("GetBirdSyntaxTree", WebUI_Events.GetBirdSyntaxTree);

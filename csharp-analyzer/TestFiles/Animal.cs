@@ -8,9 +8,9 @@ namespace csharp_analyzer.TestFiles
 {
     public class Animal
     {
-        private string _type { get; set; } = string.Empty;
+        public string _type { get; set; } = string.Empty;
 
-        private int _age { get; set; }
+        public int _age { get; set; }
 
         public Animal(string type, int age)
         { 
