@@ -1,6 +1,7 @@
 ﻿using csharp_analyzer.CodeAnalysis;
 using csharp_analyzer.Modals;
 using Microsoft.CodeAnalysis;
+using System.Collections;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -17,6 +18,26 @@ namespace csharp_analyzer
             catch (Exception e)
             {
                 return JsonSerializer.Serialize(new TreeSyntaxNode{
+                    SyntaxData = new TreeSyntaxNode.Data
+                    {
+                        DisplayName = "Error",
+                        TokenKind = e.Message,
+                    }
+                });
+            }
+        }
+
+        public static string ToJsonTrimmed(this SyntaxTree node)
+        {
+            try
+            {
+                var trimmed = TreeSyntaxNode.FromTrimmed(Enumerable.Repeat(node.GetRoot(), 1)).First();
+                return JsonSerializer.Serialize(trimmed);
+            }
+            catch (Exception e)
+            {
+                return JsonSerializer.Serialize(new TreeSyntaxNode
+                {
                     SyntaxData = new TreeSyntaxNode.Data
                     {
                         DisplayName = "Error",

@@ -77,6 +77,7 @@ namespace csharp_analyzer
                 }
             }
         }
+
         public static void GetSyntaxTreeWithFileName(ref webui_event_t e)
         {
             WebUIEvent lEvent = new WebUIEvent(e);
@@ -87,6 +88,20 @@ namespace csharp_analyzer
             }
             else  
             { 
+                lEvent.ReturnString("Syntax tree not found");
+            }
+        }
+
+        public static void GetSyntaxTreeWithFileNameTrimmed(ref webui_event_t e)
+        {
+            WebUIEvent lEvent = new WebUIEvent(e);
+            string? fileName = lEvent.GetString();
+            if (fileName is not null && GlobalStorage.SyntaxTrees.TryGetValue(fileName, out var syntaxTree) && syntaxTree is not null)
+            {
+                lEvent.ReturnString(syntaxTree.ToJsonTrimmed());
+            }
+            else
+            {
                 lEvent.ReturnString("Syntax tree not found");
             }
         }

@@ -18,6 +18,7 @@ window.Bind("GetBirdSyntaxTree", WebUI_Events.GetBirdSyntaxTree);
 window.Bind("LoadSyntaxTreeFromFile", WebUI_Events.LoadSyntaxTreeFromFile);
 window.Bind("LoadSyntaxTreeFromDirectory", WebUI_Events.LoadSyntaxTreesFromDirectory);
 window.Bind("GetSyntaxTreeWithFileName", WebUI_Events.GetSyntaxTreeWithFileName);
+window.Bind("GetSyntaxTreeWithFileNameTrimmed", WebUI_Events.GetSyntaxTreeWithFileNameTrimmed);
 window.Show(html);
 Console.WriteLine("Application is running...");
 WebUI.Wait();

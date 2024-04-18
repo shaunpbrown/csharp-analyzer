@@ -271,6 +271,25 @@ const handleDirectorySelectClicked = () => {
         });
 }
 
+const handleDirectorySelectTrimmedClicked = () => {
+    webui.call('LoadSyntaxTreeFromDirectory')
+        .then(fileNameJson => {
+            console.log('LoadSyntaxTreeFromDirectory');
+            console.log(fileNameJson);
+            if (fileNameJson === '') return;
+            clearGraph();
+            let fileNames = JSON.parse(fileNameJson);
+            fileNames.forEach(fileName => {
+                webui.call('GetSyntaxTreeWithFileNameTrimmed', fileName)
+                    .then(syntaxTreeJson => {
+                        console.log('GetSyntaxTreeWithFileName');
+                        console.log(syntaxTreeJson);
+                        createGraph(syntaxTreeJson, fileName);
+                    });
+            });
+        });
+}
+
 const handleResizeEvent = () => {
     const svg = document.select('svg');
     svg.width = document.body.clientWidth;
@@ -280,5 +299,6 @@ const handleResizeEvent = () => {
 document.getElementById('test').addEventListener('click', () => handleTestButtonClicked());
 document.getElementById('select-file').addEventListener('click', (e) => handleFileSelectClicked());
 document.getElementById('select-directory').addEventListener('click', (e) => handleDirectorySelectClicked());
+document.getElementById('select-directory-trimmed').addEventListener('click', (e) => handleDirectorySelectTrimmedClicked());
 window.addEventListener('resize', () => handleResizeEvent());
 window.addEventListener('keydown', function (event) { if (event.key === 'Escape') { window.close(); } });
