@@ -61,22 +61,22 @@ namespace csharp_analyzer.Modals
 
                     case SyntaxKind.MethodDeclaration:
                         var methodDeclaration = (MethodDeclarationSyntax)node;
-                        displayName = $"{methodDeclaration.Identifier}";
+                        displayName = $"{methodDeclaration.Identifier}{string.Join(',', methodDeclaration.ParameterList)}";
                         break;
 
                     case SyntaxKind.ClassDeclaration:
                         var classDeclaration = (ClassDeclarationSyntax)node;
-                        displayName = $"{classDeclaration.Identifier}";
+                        displayName = $"class {classDeclaration.Identifier}";
                         break;
 
                     case SyntaxKind.PropertyDeclaration:
                         var propertyDeclaration = (PropertyDeclarationSyntax)node;
-                        displayName = $"{propertyDeclaration.Identifier}";
+                        displayName = $"{propertyDeclaration.Type} {propertyDeclaration.Identifier}";
                         break;
 
                     case SyntaxKind.ConstructorDeclaration:
                         var constructorDeclaration = (ConstructorDeclarationSyntax)node;
-                        displayName = $"{constructorDeclaration.Identifier}";
+                        displayName = $"{constructorDeclaration.Identifier}{string.Join(',', constructorDeclaration.ParameterList)}";
                         break;
 
                     default:
