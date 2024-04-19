@@ -10,6 +10,8 @@ namespace csharp_analyzer.TestFiles
     {
         public bool _canFly { get; set; } = false;
 
+        public bool _isInAir { get; set; } = false;
+
         public Bird(int age, string type) : base("Bird", age)
         {
             if (!string.IsNullOrEmpty(type))
@@ -21,11 +23,17 @@ namespace csharp_analyzer.TestFiles
             if (_canFly && BirdHelperFunctions.CanFly(_type))
             {
                 Console.WriteLine("I am flying");
+                SetIsInAir(true);
             }
             else
             {
                 Console.WriteLine("I am not able to fly");
             }
+        }
+
+        public void SetIsInAir(bool isInAir)
+        {
+            _isInAir = isInAir;
         }
     }
 }

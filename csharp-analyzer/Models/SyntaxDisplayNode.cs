@@ -102,6 +102,11 @@ namespace csharp_analyzer.Modals
                     displayName = $"{constructorDeclaration.Identifier}{string.Join(',', constructorDeclaration.ParameterList)}";
                     break;
 
+                case SyntaxKind.InvocationExpression:
+                    var invocationExpression = (InvocationExpressionSyntax)node;
+                    displayName = $"{invocationExpression.Expression}{invocationExpression.ArgumentList}";
+                    break;
+
                 default:
                     var nodeKind = node.Kind().ToString();
                     if (nodeKind.Contains("Statement"))
