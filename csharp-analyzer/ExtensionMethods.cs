@@ -13,12 +13,12 @@ namespace csharp_analyzer
         public static string ToJson(this SyntaxTree node)
         {
             try{
-                return JsonSerializer.Serialize(TreeSyntaxNode.From(node.GetRoot()));
+                return JsonSerializer.Serialize(SyntaxDisplayNode.From(node.GetRoot()));
             }
             catch (Exception e)
             {
-                return JsonSerializer.Serialize(new TreeSyntaxNode{
-                    SyntaxData = new TreeSyntaxNode.Data
+                return JsonSerializer.Serialize(new SyntaxDisplayNode{
+                    SyntaxData = new SyntaxDisplayNode.Data
                     {
                         DisplayName = "Error",
                         TokenKind = e.Message,
@@ -31,14 +31,14 @@ namespace csharp_analyzer
         {
             try
             {
-                var trimmed = TreeSyntaxNode.FromTrimmed(Enumerable.Repeat(node.GetRoot(), 1)).First();
+                var trimmed = SyntaxDisplayNode.FromTrimmed(Enumerable.Repeat(node.GetRoot(), 1)).First();
                 return JsonSerializer.Serialize(trimmed);
             }
             catch (Exception e)
             {
-                return JsonSerializer.Serialize(new TreeSyntaxNode
+                return JsonSerializer.Serialize(new SyntaxDisplayNode
                 {
-                    SyntaxData = new TreeSyntaxNode.Data
+                    SyntaxData = new SyntaxDisplayNode.Data
                     {
                         DisplayName = "Error",
                         TokenKind = e.Message,

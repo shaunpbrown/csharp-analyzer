@@ -31,16 +31,22 @@ namespace csharp_analyzer
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    var fileString = File.ReadAllText(openFileDialog.FileName);
-                    SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(fileString);
+                    GlobalStorage.SyntaxTrees.Clear();
+
+                    var fileName = openFileDialog.FileName;
+
+                    using StreamReader reader = new(fileName);
+                    var data = reader.ReadToEnd();
+                    var syntaxTree = CSharpAnalyzer.GenerateSyntaxTree(data);
+                    GlobalStorage.SyntaxTrees.GetOrAdd(fileName, syntaxTree);
+
                     if (AnalyzerConfig.ConsoleLogTrees)
                     {
                         syntaxTree.LogToConsole();
                     }
-                    var json = syntaxTree.ToJson();
 
                     WebUIEvent lEvent = new WebUIEvent(e);
-                    lEvent.ReturnString(json);
+                    lEvent.ReturnString(fileName);
                 }
             }
         }

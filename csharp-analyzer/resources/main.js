@@ -243,12 +243,25 @@ const handleTestButtonClicked = () => {
 
 const handleFileSelectClicked = () => {
     webui.call('LoadSyntaxTreeFromFile')
-        .then(res => {
+        .then(fileName => {
             console.log('LoadSyntaxTreeFromFile');
-            console.log(res);
-            if (res === '') return;
+            console.log(fileName);
+            if (fileName === '') return;
             clearGraph();
-            createGraph(res);
+
+            webui.call('GetSyntaxTreeWithFileName', fileName)
+                .then(syntaxTreeJson => {
+                    console.log('GetSyntaxTreeWithFileName');
+                    console.log(syntaxTreeJson);
+                    createGraph(syntaxTreeJson, fileName);
+                });
+
+            webui.call('GetSyntaxTreeWithFileNameTrimmed', fileName)
+                .then(syntaxTreeJson => {
+                    console.log('GetSyntaxTreeWithFileNameTrimmed');
+                    console.log(syntaxTreeJson);
+                    createGraph(syntaxTreeJson, fileName + ' (Trimmed)');
+                });
         });
 }
 
