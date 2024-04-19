@@ -79,7 +79,7 @@ namespace csharp_analyzer.Modals
 
                 case SyntaxKind.ExpressionStatement:
                     var expressionStatement = (ExpressionStatementSyntax)node;
-                    displayName = expressionStatement.Expression.ToString();
+                    displayName = $"{expressionStatement.Expression};";
                     break;
 
                 case SyntaxKind.MethodDeclaration:
