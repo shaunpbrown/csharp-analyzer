@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using csharp_analyzer.Models;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Text.Json.Serialization;
@@ -37,21 +38,19 @@ namespace csharp_analyzer.Modals
         {
             foreach (var node in nodes)
             {
-                if (GetDisplayName(node, out var displayName)) 
+                var displayNode = GetDisplayData(node);
+                var children = GetChildren(node);
+                if (displayNode is not null) 
                 {
                     yield return new SyntaxDisplayNode
                     {
-                        SyntaxData = new Data
-                        {
-                            DisplayName = displayName,
-                            TokenKind = node.Kind().ToString(),
-                        },
-                        Children = FromTrimmed(node.ChildNodes()),
+                        SyntaxData = displayNode,
+                        Children = FromTrimmed(children),
                     };
                 }
                 else 
                 {
-                    foreach (var child in FromTrimmed(node.ChildNodes()))
+                    foreach (var child in FromTrimmed(children))
                     {
                         yield return child;
                     }
@@ -59,9 +58,9 @@ namespace csharp_analyzer.Modals
             }
         }
 
-        public static bool GetDisplayName(SyntaxNode node, out string displayName)
+        public static Data? GetDisplayData(SyntaxNode node)
         {
-            displayName = string.Empty;
+            var displayName = string.Empty;
             switch (node.Kind())
             {
                 case SyntaxKind.CompilationUnit:
@@ -116,7 +115,39 @@ namespace csharp_analyzer.Modals
                     break;
             }
 
-            return !string.IsNullOrEmpty(displayName);
+            if (string.IsNullOrEmpty(displayName))
+                return null;
+
+            return new Data
+            {
+                DisplayName = displayName,
+                TokenKind = node.Kind().ToString(),
+            };
+        }
+
+        public static IEnumerable<SyntaxNode> GetChildren(SyntaxNode node)
+        {
+            if (node.IsKind(SyntaxKind.InvocationExpression) && GlobalStorage.Compilation is not null)
+            {
+                var methodSymbol = GlobalStorage.Compilation.GetSemanticModel(node.SyntaxTree).GetSymbolInfo(node).Symbol;
+                if (methodSymbol is not null)
+                {
+                    var syntaxReference = methodSymbol.DeclaringSyntaxReferences.FirstOrDefault();
+                    if (syntaxReference is not null)
+                    {
+                        var declaration = syntaxReference.GetSyntax();
+                        if (declaration is not null)
+                        {
+                            yield return declaration;
+                        }
+                    }
+                }
+            }
+
+            foreach (var child in node.ChildNodes())
+            {
+                yield return child;
+            }
         }
 
         public class Data

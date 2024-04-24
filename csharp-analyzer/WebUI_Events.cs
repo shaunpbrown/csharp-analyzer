@@ -17,6 +17,10 @@ namespace csharp_analyzer
             Console.WriteLine("GetBirdSyntaxTree called");
             var json = syntaxTree.ToJson();
 
+            GlobalStorage.Compilation = CSharpCompilation.Create("Compilation")
+                .AddReferences(MetadataReference.CreateFromFile(typeof(object).Assembly.Location))
+                .AddSyntaxTrees(GlobalStorage.SyntaxTrees.Select(s => s.Value));
+
             WebUIEvent lEvent = new WebUIEvent(e);
             lEvent.ReturnString(json);
         }
@@ -44,6 +48,10 @@ namespace csharp_analyzer
                     {
                         syntaxTree.LogToConsole();
                     }
+
+                    GlobalStorage.Compilation = CSharpCompilation.Create("Compilation")
+                        .AddReferences(MetadataReference.CreateFromFile(typeof(object).Assembly.Location))
+                        .AddSyntaxTrees(GlobalStorage.SyntaxTrees.Select(s => s.Value));
 
                     WebUIEvent lEvent = new WebUIEvent(e);
                     lEvent.ReturnString(fileName);
@@ -77,6 +85,10 @@ namespace csharp_analyzer
                             }
                         }
                     });
+
+                    GlobalStorage.Compilation = CSharpCompilation.Create("Compilation")
+                        .AddReferences(MetadataReference.CreateFromFile(typeof(object).Assembly.Location))
+                        .AddSyntaxTrees(GlobalStorage.SyntaxTrees.Select(s => s.Value));
 
                     WebUIEvent lEvent = new WebUIEvent(e);
                     lEvent.ReturnString(JsonSerializer.Serialize(fileNames));
